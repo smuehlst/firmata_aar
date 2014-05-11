@@ -1,4 +1,4 @@
 firmata_aar
 ===========
 
-Arduino sketch to contril Arexx AAR-04 robot with Firmata and Bluetooth
+Arduino sketch to control Arexx AAR-04 robot with Firmata and Bluetooth
