@@ -12,6 +12,9 @@
 #define motor_lb 10
 #define led_pin 13
 
+#define echoPin A2 // Echo Pin
+#define trigPin A3 // Trigger Pin
+
 #define SPEED_TIMER_BASE 500
 
 namespace {
@@ -311,10 +314,7 @@ void setup()
 
 	digitalWrite(red_line_led, LOW);
 
-#if 0
 	pinMode(8, OUTPUT);  // status led
-	pinMode(A2, INPUT);  // battery sensor
-#endif
 
 	pinMode(A6, INPUT); // linesensor left
 	pinMode(A7, INPUT); // linesensor right
@@ -340,6 +340,9 @@ void setup()
 	// set interrupt for encoders
 	attachInterrupt(1, leftsens, CHANGE);
 	attachInterrupt(0, rightsens, CHANGE);
+
+	pinMode(trigPin, OUTPUT);
+	pinMode(echoPin, INPUT);
 }
 
 void loop()
@@ -362,4 +365,14 @@ void loop()
 	{
 		Firmata.processInput();
 	}
+
+	// HC-SR04 Ultrasonic Sensor
+	digitalWrite(trigPin, HIGH);
+	delayMicroseconds(10);
+	digitalWrite(trigPin, LOW);
+	int duration = pulseIn(echoPin, HIGH);
+	int distance = (duration / 2) / 29.1;
+
+	int ledstate = distance > 50;
+	digitalWrite(8, ledstate);
 }
